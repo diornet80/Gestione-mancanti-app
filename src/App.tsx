@@ -109,9 +109,9 @@ const App: React.FC = () => {
     const filteredItems = useMemo(() => {
         return inventory.filter(item => {
             const matchesDept = selectedAction === Action.FILTRA ? true : item.department === selectedDept;
-            const matchesMsn = item.msn.includes(filters.msn.toUpperCase());
-            const matchesPnl = (item.pnl || '').includes(filters.pnl.toUpperCase());
-            const matchesPn = item.part_number.includes(filters.partNumber.toUpperCase());
+            const matchesMsn = item.msn.startsWith(filters.msn.toUpperCase());
+            const matchesPnl = (item.pnl || '').startsWith(filters.pnl.toUpperCase());
+            const matchesPn = item.part_number.startsWith(filters.partNumber.toUpperCase());
             return matchesDept && matchesMsn && matchesPnl && matchesPn;
         });
     }, [inventory, selectedDept, selectedAction, filters]);
