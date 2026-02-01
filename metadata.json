@@ -1,0 +1,7 @@
+{
+  "name": "GESTIONE MANCANTI APP 12",
+  "description": "Track mancanti Montaggio",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
