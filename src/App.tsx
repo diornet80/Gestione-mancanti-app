@@ -108,7 +108,7 @@ const App: React.FC = () => {
 
     const filteredItems = useMemo(() => {
         return inventory.filter(item => {
-            const matchesDept = selectedAction === Action.FILTRA ? true : item.department === selectedDept;
+            const matchesDept = selectedDept ? item.department === selectedDept : true;
             const matchesMsn = item.msn.startsWith(filters.msn.toUpperCase());
             const matchesPnl = (item.pnl || '').startsWith(filters.pnl.toUpperCase());
             const matchesPn = item.part_number.startsWith(filters.partNumber.toUpperCase());
@@ -170,6 +170,7 @@ const App: React.FC = () => {
                     <ActionSelect
                         setView={setView} setSelectedAction={setSelectedAction} setFormState={setFormState}
                         fileInputRef={fileInputRef} handleImportExcel={handleImportExcel} canEdit={!!canEdit} isDarkMode={isDarkMode}
+                        currentUserRole={currentUser?.role}
                     />
                 )}
 
@@ -216,7 +217,7 @@ const App: React.FC = () => {
             {(view !== 'GUIDA' && view !== 'LOGIN') && (
                 <nav className={`fixed bottom-0 left-0 right-0 border-t px-6 py-2 flex items-center justify-around z-[200] shadow-xl transition-all ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                     <button onClick={() => { setView('DASHBOARD'); setSelectedDept(null); setSelectedAction(null); }} className={`flex flex-col items-center gap-0.5 transition-all ${view === 'DASHBOARD' ? 'text-blue-600 scale-105' : 'text-slate-400 hover:text-blue-500'}`}><Home size={22} strokeWidth={2.5} /><span className="text-[8px] font-black uppercase tracking-wider">Home</span></button>
-                    <button onClick={() => { setSelectedAction(Action.FILTRA); setView('CONTENT'); }} className={`flex flex-col items-center gap-0.5 transition-all ${selectedAction === Action.FILTRA ? 'text-blue-600 scale-105' : 'text-slate-400 hover:text-blue-500'}`}><SearchIcon size={22} strokeWidth={2.5} /><span className="text-[8px] font-black uppercase tracking-wider">Cerca</span></button>
+                    <button onClick={() => { setSelectedAction(Action.FILTRA); setSelectedDept(null); setView('CONTENT'); }} className={`flex flex-col items-center gap-0.5 transition-all ${selectedAction === Action.FILTRA ? 'text-blue-600 scale-105' : 'text-slate-400 hover:text-blue-500'}`}><SearchIcon size={22} strokeWidth={2.5} /><span className="text-[8px] font-black uppercase tracking-wider">Cerca</span></button>
                     <button onClick={() => setView('ACTION_SELECT')} disabled={view === 'DASHBOARD'} className={`flex flex-col items-center gap-0.5 transition-all ${view === 'DASHBOARD' ? 'text-slate-200 opacity-20' : 'text-slate-500 active:scale-90'}`}><ChevronLeft size={22} strokeWidth={2.5} /><span className="text-[8px] font-black uppercase tracking-wider">Indietro</span></button>
                 </nav>
             )}

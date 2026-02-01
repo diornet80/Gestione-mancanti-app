@@ -11,10 +11,11 @@ interface ActionSelectProps {
     handleImportExcel: (e: React.ChangeEvent<HTMLInputElement>) => void;
     canEdit: boolean;
     isDarkMode: boolean;
+    currentUserRole?: string;
 }
 
 export const ActionSelect: React.FC<ActionSelectProps> = ({
-    setView, setSelectedAction, setFormState, fileInputRef, handleImportExcel, canEdit, isDarkMode
+    setView, setSelectedAction, setFormState, fileInputRef, handleImportExcel, canEdit, isDarkMode, currentUserRole
 }) => {
     return (
         <div className="max-w-md mx-auto space-y-4 animate-fade-in">
@@ -35,17 +36,21 @@ export const ActionSelect: React.FC<ActionSelectProps> = ({
                         <div className="p-5 bg-rose-50 text-rose-600 rounded-2xl"><Trash2 size={32} /></div>
                         <span className={`text-xl font-black uppercase italic ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Evadi</span>
                     </button>
-                    <button onClick={() => fileInputRef.current?.click()} className={`w-full p-8 rounded-[2.5rem] shadow-sm border-2 border-transparent hover:border-[#1D6F42] flex items-center gap-6 group transition-all ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`}>
-                        <div className="p-5 bg-emerald-50 text-[#1D6F42] rounded-2xl"><FileSpreadsheet size={32} /></div>
-                        <span className={`text-xl font-black uppercase italic ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Importa Excel</span>
-                        <input type="file" ref={fileInputRef} onChange={handleImportExcel} accept=".xlsx, .xls, .csv" className="hidden" />
-                    </button>
                 </>
             )}
+
             <button onClick={() => { setSelectedAction(Action.FILTRA); setView('CONTENT'); }} className={`w-full p-8 rounded-[2.5rem] shadow-sm border-2 border-transparent hover:border-blue-500 flex items-center gap-6 group transition-all ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`}>
                 <div className="p-5 bg-blue-50 text-blue-600 rounded-2xl"><SearchIcon size={32} /></div>
                 <span className={`text-xl font-black uppercase italic ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Lista / Filtri</span>
             </button>
+
+            {canEdit && currentUserRole === 'admin' && (
+                <button onClick={() => fileInputRef.current?.click()} className={`w-full p-8 rounded-[2.5rem] shadow-sm border-2 border-transparent hover:border-[#1D6F42] flex items-center gap-6 group transition-all ${isDarkMode ? 'bg-slate-900' : 'bg-white'}`}>
+                    <div className="p-5 bg-emerald-50 text-[#1D6F42] rounded-2xl"><FileSpreadsheet size={32} /></div>
+                    <span className={`text-xl font-black uppercase italic ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>Importa Excel</span>
+                    <input type="file" ref={fileInputRef} onChange={handleImportExcel} accept=".xlsx, .xls, .csv" className="hidden" />
+                </button>
+            )}
         </div>
     );
 };
